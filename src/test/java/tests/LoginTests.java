@@ -2,6 +2,7 @@ package tests;
 
 import dto.User;
 import manager.AppManager;
+import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.BoardsPage;
@@ -11,7 +12,7 @@ import pages.LoginPage;
 public class LoginTests extends AppManager {
 
     @Test
-    public void loginPositiveTest(){
+    public void loginPositiveTest() {
         User user = User.builder()
                 .email("sveta1978medved@gmail.com")
                 .password("Medqwerty12345!")
@@ -21,14 +22,26 @@ public class LoginTests extends AppManager {
         Assert.assertTrue(new BoardsPage(getDriver()).validateUrl("boards"));
     }
 
-    @Test
-    public void loginNegativeTest(){
+    @Test(expectedExceptions = TimeoutException.class)
+    public void loginNegativeTest() {
         User user = User.builder()
                 .email("sveta1978medved@gmail.com")
                 .password("Medqwerty12345!")
                 .build();
         new HomePage(getDriver()).clickBtnLogin();
         new LoginPage(getDriver()).login(user);
-        Assert.assertFalse(new BoardsPage(getDriver()).validateUrl("poiu"));
+        new BoardsPage(getDriver()).validateUrl("poiu");
+    }
+
+    @Test
+    public void loginNegativeTest_Another() {
+        User user = User.builder()
+                .email("sveta1978medved@gmail.com")
+                .password("Medqwerty12345!")
+                .build();
+        new HomePage(getDriver()).clickBtnLogin();
+        new LoginPage(getDriver()).login(user);
+        Assert.assertFalse(new BoardsPage(getDriver())
+                .validateUrlWOCreateException("ouiy"));
     }
 }

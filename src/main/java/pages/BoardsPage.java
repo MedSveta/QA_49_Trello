@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class BoardsPage extends BasePage{
+public class BoardsPage extends BasePage {
     public BoardsPage(WebDriver driver) {
         setDriver(driver);
         PageFactory.initElements(new AjaxElementLocatorFactory
@@ -28,19 +28,28 @@ public class BoardsPage extends BasePage{
     @FindBy(xpath = "//span[@class='VmbXKMJLSqfD0U']")
     WebElement popUpMessageDelete;
 
+    @FindBy(xpath = "//*[@data-testid='header-member-menu-avatar']")
+    WebElement btnAccount;
+    @FindBy(xpath = "//span[text()='Manage account']")
+    WebElement btnManageAccount;
 
-    public boolean validatePopUpMessage(String text){
+    public void openMyAccount() {
+    clickWait(btnAccount);
+    clickWait(btnManageAccount);
+    }
+
+    public boolean validatePopUpMessage(String text) {
         return validateTextInElement(popUpMessageDelete, text);
     }
 
-    public void createNewBoard(Board board){
+    public void createNewBoard(Board board) {
         pause(5);
         btnCreateNewBoard.click();
         clickWait(inputBoardTitle);
         inputBoardTitle.sendKeys(board.getBoardTitle());
     }
 
-    public void clickBtnCreate(){
+    public void clickBtnCreate() {
         clickWait(btnCreate);
     }
 
@@ -53,14 +62,14 @@ public class BoardsPage extends BasePage{
         try {
             return new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(ExpectedConditions.urlContains(url));
-        }catch (TimeoutException e){
+        } catch (TimeoutException e) {
             e.printStackTrace();
             System.out.println("created exception");
             return false;
         }
     }
 
-    public boolean buttonCreateIsNotClickable(){
+    public boolean buttonCreateIsNotClickable() {
         return new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.not(ExpectedConditions
                         .elementToBeClickable(btnCreate)));

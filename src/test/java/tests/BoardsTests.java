@@ -58,4 +58,13 @@ public class BoardsTests extends AppManager {
         Assert.assertTrue(new MyBoardPage(getDriver())
                 .validateBoardName(board.getBoardTitle()));
     }
+
+    @Test(dataProvider = "newBoardDataProviderFromFile", dataProviderClass = DataProviderBoards.class)
+    public void createNewBoardPositiveWithDataProviderFromFile(Board board){
+        BoardsPage boardsPage = new BoardsPage(getDriver());
+        boardsPage.createNewBoard(board);
+        boardsPage.clickBtnCreate();
+        Assert.assertTrue(new MyBoardPage(getDriver())
+                .validateBoardName(board.getBoardTitle()));
+    }
 }

@@ -11,7 +11,7 @@ import pages.LoginPage;
 
 public class LoginTests extends AppManager {
 
-    @Test
+    @Test(groups = "smoke")
     public void loginPositiveTest() {
         User user = User.builder()
                 .email("sveta1978medved@gmail.com")
@@ -33,7 +33,7 @@ public class LoginTests extends AppManager {
         new BoardsPage(getDriver()).validateUrl("poiu");
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void loginNegativeTest_Another() {
         User user = User.builder()
                 .email("sveta1978medved@gmail.com")

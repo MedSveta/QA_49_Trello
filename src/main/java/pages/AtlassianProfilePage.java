@@ -24,6 +24,9 @@ public class AtlassianProfilePage extends BasePage {
     WebElement uploadAPhoto;
     @FindBy(xpath = "//button[@type='submit']")
     WebElement btnUpload;
+    @FindBy(xpath = "//div[@class='_11c82smr _1reo1wug _18m91wug _c71l53f4 _1i4qfg65']")
+    WebElement popUpMessage;
+
 
     public void changeMyProfilePhoto(String photoPath){
         //clickWait(btnProfilePhoto);
@@ -35,6 +38,10 @@ public class AtlassianProfilePage extends BasePage {
         System.out.println(photo.getAbsolutePath());
         uploadAPhoto.sendKeys(photo.getAbsolutePath());
         clickWait(btnUpload);
+    }
+
+    public boolean validateMessage(String text){
+        return validateTextInElement(popUpMessage, text);
     }
 
 }

@@ -2,19 +2,21 @@ package tests;
 
 import dto.User;
 import manager.AppManager;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.AtlassianProfilePage;
 import pages.BoardsPage;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.RetryAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeProfileTests extends AppManager {
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         User user = User.builder()
                 .email("sveta1978medved@gmail.com")
@@ -24,7 +26,7 @@ public class ChangeProfileTests extends AppManager {
         new LoginPage(getDriver()).login(user);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = "smoke")
     public void changeProfilePhoto() {
         new BoardsPage(getDriver()).openMyAccount();
         List<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
@@ -32,5 +34,7 @@ public class ChangeProfileTests extends AppManager {
         getDriver().switchTo().window(tabs.get(1));
         AtlassianProfilePage atlassianProfilePage = new AtlassianProfilePage(getDriver());
         atlassianProfilePage.changeMyProfilePhoto("src/main/resources/tr_logo_3x.png");
+        Assert.assertTrue(atlassianProfilePage.validateMessage("We've uploaded your new avatar. " +
+                "It may take a few minutes to display everywhere."));
     }
 }
